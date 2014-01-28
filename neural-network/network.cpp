@@ -38,12 +38,13 @@ int main(int argc, char** argv)
 		}
 		else if (arg == "neurons_per_layer") {
 			int neurons_per_layer;
-			for (auto i : network) {
+			for (int i = 0; i < network.size(); ++i) {
 				paramfile >> neurons_per_layer;
-				i.resize(neurons_per_layer);
+				network[i].resize(neurons_per_layer);
 			}
+			getline(paramfile, arg);
 		}
-		else if (arg == "learing_rate") {
+		else if (arg == "learning_rate") {
 			paramfile >> learnRate;
 		}
 		else if (arg == "num_epochs") {
@@ -60,9 +61,14 @@ int main(int argc, char** argv)
 		}
 	}
 
-	cout << "Number of layers: " << numLayers << endl;
-	cout << "Neurons per layer: ";
-	for (auto i : network) cout << i.size() << " " << endl;
+	cout << "Number of layers: " << network.size() << endl;
+	
+	cout << "Neurons per layer:\n";
+	for (int i = 0; i < network.size(); ++i) { 
+		cout << network[i].size() << " ";
+	}
+	cout << endl;
+
 	cout << "Number of epochs: " << numEpochs << endl;
 	cout << "Learning rate: " << learnRate << endl;
 	cout << "File names:\n" 
