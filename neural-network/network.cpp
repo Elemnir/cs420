@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <random>
 
-#include "neuron.inl"
+#include "neuron.hpp"
 
 using namespace std;
 
@@ -17,8 +18,8 @@ int main(int argc, char** argv)
 	ifstream paramfile(paramFileName.c_str());
 
 	if (paramfile.fail()) {
-		cerr << "File configuration file '" << paramFileName << "' is missing, " 
-			 << "use '$> make param' to generate the default\n";
+		cerr << "Configuration file '" << paramFileName << "' is missing,\n" 
+			 << "use '$> make param' to generate the default 'config.param'\n";
 		return -1;
 	}
 
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
 
 	cout << "Number of layers: " << network.size() << endl;
 	
-	cout << "Neurons per layer:\n";
+	cout << "Neurons per layer: ";
 	for (int i = 0; i < network.size(); ++i) { 
 		cout << network[i].size() << " ";
 	}
@@ -71,10 +72,18 @@ int main(int argc, char** argv)
 
 	cout << "Number of epochs: " << numEpochs << endl;
 	cout << "Learning rate: " << learnRate << endl;
-	cout << "File names:\n" 
-		 << trainingName << endl
-		 << testingName << endl
-		 << validationName << endl;
+	
+	mt19937 rng(random_device{}());
+	uniform_real_distribution<double> dist(-1.0,1.0);
+
+	for (int i = 1; i < network.size(); ++i) {
+		for (int j = 0; j < network[i].size(); ++j) {
+			for (int k = 0; k < network[i-1].size(); ++k) {
+				network[i][j].inputs.push_back(&network[i-1][k]);
+				network[i][j].weights.push_back(dist(rng));
+			}
+		}
+	}
 	
 	return 0;
 }
