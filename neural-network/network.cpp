@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <random>
 
@@ -9,6 +10,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+	//open the parameter file
 	string paramFileName;
 	if (argc == 2)
 		paramFileName = argv[1];
@@ -23,6 +25,8 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
+	
+	//parse the parameter file to configure the network
 	int numLayers, numEpochs;
 	double learnRate;
 	string arg, trainingName, testingName, validationName;
@@ -62,6 +66,43 @@ int main(int argc, char** argv)
 		}
 	}
 
+	
+	//build the input/output matrices from the data set files
+	ifstream trainingFile(trainingName.c_str()), 
+			 testingFile(testingName.c_str()), 
+			 validationFile(validationName.c_str());
+	if (trainingFile.fail() || testingFile.fail() || validationFile.fail()) {
+		cerr << "One or more of the data set files are missing.\n";
+		return -1;
+	}
+	
+	vector<vector<double> > trainingSet, testingSet, validationSet;
+	string line;
+	stringstream ss;
+	double val;
+	while (getline(trainingFile, line)) {
+		ss.clear(); ss.str(line);
+		trainingSet.emplace_back();
+		while (ss >> val)
+			trainingSet.back().push_back(val);
+	}
+	
+	while (getline(testingFile, line)) {
+		ss.clear(); ss.str(line);
+		testingSet.emplace_back();
+		while (ss >> val)
+			testingSet.back().push_back(val);
+	}
+	
+	while (getline(validationFile, line)) {	
+		ss.clear(); ss.str(line);
+		validationSet.emplace_back();
+		while (ss >> val)
+			validationSet.back().push_back(val);
+	}
+	
+	
+	//print header information before starting the network simulation
 	cout << "Number of layers: " << network.size() << endl;
 	
 	cout << "Neurons per layer: ";
@@ -73,6 +114,7 @@ int main(int argc, char** argv)
 	cout << "Number of epochs: " << numEpochs << endl;
 	cout << "Learning rate: " << learnRate << endl;
 	
+	//initialize the network and assign random weights to each neuron
 	mt19937 rng(random_device{}());
 	uniform_real_distribution<double> dist(-1.0,1.0);
 

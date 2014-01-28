@@ -5,12 +5,12 @@ num_layers           5
 
 // fill in a value for the number of neurons in each layer
 //                   input layer -> output layer
-neurons_per_layer	 2 5 5 5 1 
+neurons_per_layer    2 5 5 5 1 
 
-learning_rate		 0.05
+learning_rate        0.05
 num_epochs           100
 
 // filenames for the set of files used in the simulation
-training_file_name	 one.training
-testing_file_name	 one.testing
+training_file_name   one.training
+testing_file_name    one.testing
 validation_file_name one.validate
