@@ -114,6 +114,7 @@ int main(int argc, char** argv)
 	cout << "Number of epochs: " << numEpochs << endl;
 	cout << "Learning rate: " << learnRate << endl;
 	
+
 	//initialize the network and assign random weights to each neuron
 	mt19937 rng(random_device{}());
 	uniform_real_distribution<double> dist(-1.0,1.0);
@@ -127,5 +128,44 @@ int main(int argc, char** argv)
 		}
 	}
 	
+	
+	//loop over the training and testing data for each epoch
+	for (int t = 0; t < numEpochs; ++t) 
+	{
+		//loop over the training set
+		for (int i = 0; i < trainingSet.size(); ++i) 
+		{
+			for (int j = 0; j < trainingSet[i].size() - 1; ++j) 
+				network[0][j].output = trainingSet[i][j];
+
+			for (int p = 1; p < network.size(); ++p)
+				for (int q = 0; q < network[p].size(); ++q)
+					network[p][q].update();
+		}
+
+		//loop over the validation set
+		for (int i = 0; i < testingSet.size(); ++i) 
+		{
+			for (int j = 0; j < testingSet[i].size() - 1; ++j) 
+				network[0][j].output = testingSet[i][j];
+
+			for (int p = 1; p < network.size(); ++p)
+				for (int q = 0; q < network[p].size(); ++q)
+					network[p][q].update();
+		}
+	}
+
+
+	//verify the accuracy of the network over the validation set
+	for (int i = 0; i < validationSet.size(); ++i)
+	{
+		for (int j = 0; j < testingSet[i].size() - 1; ++j)
+			network[0][j].output = testingSet[i][j];
+
+		for (int p = 1; p < network.size(); ++p)
+			for (int q = 0; q < network[p].size(); ++q)
+				network[p][q].update();
+	}
+
 	return 0;
 }

@@ -2,7 +2,7 @@ CC=g++ --std=c++11 -Wall -Wextra
 
 PROG=network.cpp -o neuralnet
 
-all: main
+all: neuralnet init 
 
 init: param gen_problem_files
 
@@ -10,7 +10,7 @@ gen_problem_files:
 	python setgen.py one
 	python setgen.py two
 
-main: network.cpp
+neuralnet: network.cpp
 	$(CC) $(PROG)
 
 param:
