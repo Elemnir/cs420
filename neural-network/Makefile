@@ -1,7 +1,6 @@
 CC=g++ --std=c++11
 
 PROG=network.cpp -o neuralnet
-DEPS=neuron.cpp
 
 all: main
 
@@ -11,8 +10,8 @@ gen_problem_files:
 	python setgen.py one
 	python setgen.py two
 
-main: $(DEPS) network.cpp
-	$(CC) $(DEPS) $(PROG)
+main: network.cpp
+	$(CC) $(PROG)
 
 param:
 	cp config.template config.param

@@ -17,4 +17,13 @@ class Neuron
 	std::vector<T> weights;
 };
 
+template <typename T>
+Neuron<T>::Neuron() 
+{
+}
+
+template <typename T>
+void Neuron<T>::train(std::vector<T> &adj)
+{
+}
 #endif // NEURON_H
