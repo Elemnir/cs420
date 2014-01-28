@@ -141,6 +141,7 @@ int main(int argc, char** argv)
 			for (int p = 1; p < network.size(); ++p)
 				for (int q = 0; q < network[p].size(); ++q)
 					network[p][q].update();
+			cout << network.back().back().output << endl;
 		}
 
 		//loop over the validation set
