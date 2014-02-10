@@ -1,4 +1,4 @@
-CC=g++ --std=c++11 -Wall -Wextra
+CC=g++ --std=c++11
 
 PROG=network.cpp -o neuralnet
 

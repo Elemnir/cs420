@@ -115,19 +115,23 @@ int main(int argc, char** argv)
 	cout << "Learning rate: " << learnRate << endl;
 	
 
-	//initialize the network and assign random weights to each neuron
+	//initialize the network and assign random weights to each neuron's inputs
 	mt19937 rng(random_device{}());
-	uniform_real_distribution<double> dist(-1.0,1.0);
+	uniform_real_distribution<double> dist(-0.1,0.1);
 
 	for (int i = 1; i < network.size(); ++i) {
 		for (int j = 0; j < network[i].size(); ++j) {
 			for (int k = 0; k < network[i-1].size(); ++k) {
 				network[i][j].inputs.push_back(&network[i-1][k]);
+				network[i-1][k].outputs.push_back(&network[i][j]);
 				network[i][j].weights.push_back(dist(rng));
 			}
+			network[i][j].index = j;
+			network[i][j].bias = dist(rng);
 		}
 	}
 	
+	double sum, rmse;
 	
 	//loop over the training and testing data for each epoch
 	for (int t = 0; t < numEpochs; ++t) 
@@ -138,13 +142,27 @@ int main(int argc, char** argv)
 			for (int j = 0; j < trainingSet[i].size() - 1; ++j) 
 				network[0][j].output = trainingSet[i][j];
 
+			//calculate an output
 			for (int p = 1; p < network.size(); ++p)
 				for (int q = 0; q < network[p].size(); ++q)
 					network[p][q].update();
-			cout << network.back().back().output << endl;
+			
+			//calculate deltas
+			for (int j = 0; j < network.back().size(); ++j)
+				network.back().at(j).calcoutputdelta(trainingSet[i].back());
+
+			for (int p = network.size() - 2; p >= 1; --p)
+				for (int q = 0; q < network[p].size(); ++q)
+					network[p][q].calcdelta();
+
+			//update the weights
+			for (int p = 1; p < network.size(); ++p)
+				for (int q = 0; q < network[p].size(); ++q)
+					network[p][q].apply(learnRate);
 		}
 
-		//loop over the validation set
+		//loop over the testing set
+		sum = 0.0f;
 		for (int i = 0; i < testingSet.size(); ++i) 
 		{
 			for (int j = 0; j < testingSet[i].size() - 1; ++j) 
@@ -153,20 +171,31 @@ int main(int argc, char** argv)
 			for (int p = 1; p < network.size(); ++p)
 				for (int q = 0; q < network[p].size(); ++q)
 					network[p][q].update();
+			
+			sum += pow((testingSet[i].back() - network.back().back().output), 2);
 		}
+		rmse = sqrt((1/(2*testingSet.size()))*sum);
+
+		cout << "End Epoch: " << t << " RMSE: " << rmse << endl;
 	}
 
 
 	//verify the accuracy of the network over the validation set
+	sum = 0.0f;
 	for (int i = 0; i < validationSet.size(); ++i)
 	{
-		for (int j = 0; j < testingSet[i].size() - 1; ++j)
-			network[0][j].output = testingSet[i][j];
+		for (int j = 0; j < validationSet[i].size() - 1; ++j)
+			network[0][j].output = validationSet[i][j];
 
 		for (int p = 1; p < network.size(); ++p)
 			for (int q = 0; q < network[p].size(); ++q)
 				network[p][q].update();
+
+		sum += pow((validationSet[i].back() - network.back().back().output), 2);
 	}
+	rmse = sqrt((1/(2*validationSet.size()))*sum);
+
+	cout << "End Simulation, RMSE: " << rmse << endl;
 
 	return 0;
 }
