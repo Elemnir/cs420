@@ -50,7 +50,7 @@ T Neuron<T>::sigmoid(T in)
 template <typename T>
 void Neuron<T>::calcoutputdelta(double actual)
 {
-	delta = output * (1 - output) * (actual - output);
+	delta = 2 * output * (1 - output) * (actual - output);
 }
 
 template <typename T>

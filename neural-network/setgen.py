@@ -8,6 +8,15 @@ def f1(x, y):
 def f2(x, y, z):
 	return (3.0 / 13) * ((x * x / 2.0 ) + (y * y / 3.0) + (z * z / 4.0))
 
+def f3(x, y):
+	if x < 0 and y >= 0:
+		return 1.0
+	elif x >= 0 and y < 0:
+		return 1.0
+	else:
+		return 0.0
+
+
 if len(argv) == 1:
 	print "Valid problem sets are: one two\n"
 	exit()
@@ -17,7 +26,7 @@ script, problem = argv
 train = open(problem + '.training', 'w')
 test = open(problem + '.testing', 'w')
 valid = open(problem + '.validate', 'w')
-	
+
 if problem == 'one':
 	for i in range(0, 200):
 		x = uniform(-2.0, 2.0)
@@ -57,6 +66,25 @@ elif problem == 'two':
 		y = uniform(-2.0, 2.0)
 		z = uniform(-2.0, 2.0)
 		line = str(x) + " " + str(y) + " " + str(z) + " " + str( f2(x,y,z) ) + "\n"
+		valid.write(line)
+
+elif problem == 'xor':
+	for i in range(0, 200):
+		x = uniform(-2.0, 2.0)
+		y = uniform(-2.0, 2.0)
+		line = str(x) + ' ' + str(y) + ' ' + str( f3(x,y) ) + '\n'
+		train.write(line)
+
+	for i in range(0, 100):
+		x = uniform(-2.0, 2.0)
+		y = uniform(-2.0, 2.0)
+		line = str(x) + ' ' + str(y) + ' ' + str( f3(x,y) ) + '\n'
+		test.write(line)
+
+	for i in range(0, 50):
+		x = uniform(-2.0, 2.0)
+		y = uniform(-2.0, 2.0)
+		line = str(x) + ' ' + str(y) + ' ' + str( f3(x,y) ) + '\n'
 		valid.write(line)
 
 train.close()

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -131,7 +132,7 @@ int main(int argc, char** argv)
 		}
 	}
 	
-	double sum, rmse;
+	double sum, rmse, mse;
 	
 	//loop over the training and testing data for each epoch
 	for (int t = 0; t < numEpochs; ++t) 
@@ -150,7 +151,7 @@ int main(int argc, char** argv)
 			//calculate deltas
 			for (int j = 0; j < network.back().size(); ++j)
 				network.back().at(j).calcoutputdelta(trainingSet[i].back());
-
+			
 			for (int p = network.size() - 2; p >= 1; --p)
 				for (int q = 0; q < network[p].size(); ++q)
 					network[p][q].calcdelta();
@@ -174,9 +175,11 @@ int main(int argc, char** argv)
 			
 			sum += pow((testingSet[i].back() - network.back().back().output), 2);
 		}
-		rmse = sqrt((1/(2*testingSet.size()))*sum);
 
-		cout << "End Epoch: " << t << " RMSE: " << rmse << endl;
+		mse = sum / testingSet.size();
+		rmse = sqrt(mse);
+		cout << setw(10) << t << ", " << setprecision(10) 
+			 << mse << ", " << rmse << endl;
 	}
 
 
@@ -193,9 +196,9 @@ int main(int argc, char** argv)
 
 		sum += pow((validationSet[i].back() - network.back().back().output), 2);
 	}
-	rmse = sqrt((1/(2*validationSet.size()))*sum);
-
-	cout << "End Simulation, RMSE: " << rmse << endl;
+	mse = sum / validationSet.size();
+	rmse = sqrt(mse);
+	cout << setprecision(10) << mse << ", " << rmse << endl;
 
 	return 0;
 }

@@ -1,4 +1,4 @@
-CC=g++ --std=c++11
+CC=g++ --std=c++11 -O3
 
 PROG=network.cpp -o neuralnet
 
