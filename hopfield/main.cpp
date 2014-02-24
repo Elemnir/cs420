@@ -51,7 +51,7 @@ void testPatterns(int p)
 			}
 		}
 	}
-	cout << "Unstable: " << unstableCount << endl;
+	
 	avgPercentUnstable[p] += (double(unstableCount) / p);
 	avgNumberStable[p] += p - unstableCount;
 }
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 	discrete_distribution<int> dist {1, 0, 1}; //generates 0's and 2's
 	weights.resize(100, vector<double>(100, 0.0f));
 	
-	int numruns = 1; //take as argument later
+	int numruns = 100; //take as argument later
 	for (int i = 0; i < numruns; i++)
 	{
 		//initialize the pattern set
