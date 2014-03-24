@@ -1,0 +1,6 @@
+20      # Population size
+30      # Number of genes per individual
+0.033   # Mutation probability
+0.6     # Crossover probability
+-1      # Random number generator seed (-1 for a pseudo random seed)
+10      # Number of generations
