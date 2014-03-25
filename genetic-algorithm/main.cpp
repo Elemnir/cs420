@@ -19,7 +19,7 @@ struct Entity
     {
         unsigned val = 0;
         for (unsigned i = 0; i < g.size(); i++)
-            if (g[g.size() - 1 - i] == 1)
+            if (g[g.size() - 1 - i] == '1')
                 val += (1 << i);
         fit = pow((double(val) / pow(2,g.size())), 10);
     }
@@ -82,6 +82,8 @@ int main(int argc, char** argv)
     //maps for recording data
     map<int, double> bestFitness, avgFitness, numBits;
     
+    cerr << "Completed initialization, starting generation...\n";
+
     //loop for a number of generations
     double totalfitness, runningsum, maxindex, maxfitness; 
     for (int g = 0; g <= generationCount; ++g)
