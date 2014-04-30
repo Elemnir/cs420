@@ -4,14 +4,14 @@ PROG=pso
 
 all: main 
 
-main: main.cpp particle
-	$(CC) -o $(PROG) main.cpp
+main: main.o particle.o
+	$(CC) -o $(PROG) main.o particle.o
 
-particle: particle.cpp
+main.o: main.cpp
+	$(CC) -c main.cpp
+
+particle.o: particle.h particle.cpp
 	$(CC) -c particle.cpp
-
-debug:
-	$(CC) -g -Wall -Wextra $(PROG) main.cpp
 
 clean:
 	rm *.o $(PROG)
