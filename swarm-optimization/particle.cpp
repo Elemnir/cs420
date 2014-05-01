@@ -43,14 +43,14 @@ void Particle::update()
     xpos += xvel;
     ypos += yvel;
 
-    //personal best
+    //update personal best
     if (quality(xpos, ypos) > quality(xbest, ybest))
     {
         xbest = xpos;
         ybest = ypos;
     }
 
-    //global best
+    //update global best
     if (quality(xpos, ypos) > quality(xglobal, yglobal))
     {
         xglobal = xpos;
@@ -59,11 +59,12 @@ void Particle::update()
 }
 
 double quality(double x, double y)
-{//calculates the performance of a given Particle switches on probnum
-    double mdist = std::pow(Particle::width,2) + std::pow(Particle::height,2);
+{//calculates the performance of a given Particle, switches on probnum
+    double mdist = std::pow(Particle::width, 2.0f);
+    mdist += std::pow(Particle::height, 2.0f);
     mdist = std::sqrt(mdist) / 2.0f;
-    double pdist = std::sqrt(std::pow((x-20),2) + std::pow((y-7),2));
-    double ndist = std::sqrt(std::pow((x+20),2) + std::pow((y+7),2));
+    double pdist = std::sqrt(std::pow(x - 20, 2.0f) + std::pow(y - 7, 2.0f));
+    double ndist = std::sqrt(std::pow(x + 20, 2.0f) + std::pow(y + 7, 2.0f));
 
     double rval = 0.0f;
     switch(Particle::probnum)

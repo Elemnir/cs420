@@ -10,7 +10,7 @@ class Particle
     double xvel, yvel; //particle velocity
     double xbest, ybest; //personal best position
  
-    static double xglobal, yglobal;
+    static double xglobal, yglobal; //global best position
     static double inertia, cognit, social; //global system parameters
     static double maxvel, width, height; //world height and width
     static int probnum; //selects the problem to use
