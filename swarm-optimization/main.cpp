@@ -5,8 +5,6 @@
 
 #include "particle.h"
 
-std::vector<Particle> pop;
-
 int main(int argc, char** argv)
 {
     //setup and read in commandline parameters

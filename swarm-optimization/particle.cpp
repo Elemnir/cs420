@@ -1,5 +1,6 @@
 #include "particle.h"
 
+#include <string>
 #include <random>
 #include <cmath>
 
@@ -80,4 +81,8 @@ double quality(double x, double y)
             break;
     }
     return rval;
+}
+
+void printImage(std::string const& fname)
+{
 }

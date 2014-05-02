@@ -5,7 +5,7 @@ PROG=pso
 all: main 
 
 main: main.o particle.o
-	$(CC) -o $(PROG) main.o particle.o
+	$(CC) -o $(PROG) particle.o main.o
 
 main.o: main.cpp
 	$(CC) -c main.cpp

@@ -1,4 +1,9 @@
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
 #include <random>
+#include <string>
+#include <vector>
 
 class Particle
 {
@@ -19,3 +24,8 @@ class Particle
 };
 
 double quality(double x, double y);
+void printImage(std::string const& fname);
+
+extern std::vector<Particle> pop;
+
+#endif // PARTICLE_H
