@@ -56,6 +56,8 @@ int main(int argc, char** argv)
         xerr = std::sqrt((1.0f / (2 * pop.size())) * xerr);
         yerr = std::sqrt((1.0f / (2 * pop.size())) * yerr);
 
+        printImage("frame" + std::to_string(epoch));
+
     } while (epoch++ < epoch_limit && (xerr > threshold || yerr > threshold));
 
     std::cout << "Convergence at epoch:" << epoch << std::endl;

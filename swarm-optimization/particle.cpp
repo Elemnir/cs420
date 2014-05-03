@@ -1,9 +1,11 @@
 #include "particle.h"
 
 #include <string>
+#include <fstream>
 #include <random>
 #include <cmath>
 
+std::vector<Particle> pop;
 double Particle::xglobal, Particle::yglobal;
 double Particle::inertia, Particle::cognit, Particle::social;
 double Particle::maxvel = 10, Particle::width = 100, Particle::height = 100;
@@ -84,5 +86,34 @@ double quality(double x, double y)
 }
 
 void printImage(std::string const& fname)
-{
+{//prints out the population to a pgm file
+    int x, y;
+    std::vector<std::vector<int>> image(int(Particle::height), 
+            std::vector<int>(int(Particle::width), 255));
+
+    //construct the image as a vector of pixel hue values
+    for (auto i : pop)
+    {
+        x = (Particle::width / 2) + std::floor(i.xpos);
+        y = (Particle::height / 2) - std::floor(i.ypos);
+        if (x < image.back().size() && x >= 0 && y < image.size() && y >= 0)
+        {
+            if (image[y][x] == 255)
+                image[y][x] = 192;
+            else if (image[y][x] != 0)
+                image[y][x] -= 8;
+        }
+    }
+
+    //write the image vector to a pgm file
+    std::ofstream out((fname + ".pgm").c_str());
+    out << "P2\n" << Particle::width << " " << Particle::height << "\n255\n";
+    for (auto i : image)
+    {
+        for (auto j : i)
+        {
+            out << j << ' ';
+        }
+        out << '\n';
+    }
 }
