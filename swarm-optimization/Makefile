@@ -14,4 +14,4 @@ particle.o: particle.h particle.cpp
 	$(CC) -c particle.cpp
 
 clean:
-	rm *.o $(PROG)
+	rm *.o *.gif *.pgm $(PROG)

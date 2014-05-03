@@ -8,7 +8,7 @@
 std::vector<Particle> pop;
 double Particle::xglobal, Particle::yglobal;
 double Particle::inertia, Particle::cognit, Particle::social;
-double Particle::maxvel = 10, Particle::width = 100, Particle::height = 100;
+double Particle::maxvel = 1, Particle::width = 100, Particle::height = 100;
 int Particle::probnum = 1;
 
 std::mt19937 Particle::rng(std::random_device{}());

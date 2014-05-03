@@ -1,5 +1,7 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <cmath>
 
@@ -41,9 +43,10 @@ int main(int argc, char** argv)
     //loop until within an error threshold
     double xerr, yerr, threshold = 0.01;
     int epoch = 0;
+    std::stringstream ss;
     do {
         //update the population
-        for (auto i : pop)
+        for (auto& i : pop)
             i.update();
 
         //calculate error
@@ -55,11 +58,15 @@ int main(int argc, char** argv)
         }
         xerr = std::sqrt((1.0f / (2 * pop.size())) * xerr);
         yerr = std::sqrt((1.0f / (2 * pop.size())) * yerr);
+        
+        //print an image of the population
+        ss.clear(); ss.str("");
+        ss << "frame" << std::setw(4) << std::setfill('0') << epoch;
+        printImage(ss.str());
 
-        printImage("frame" + std::to_string(epoch));
+    } while (++epoch < epoch_limit && (xerr > threshold || yerr > threshold));
 
-    } while (epoch++ < epoch_limit && (xerr > threshold || yerr > threshold));
-
-    std::cout << "Convergence at epoch:" << epoch << std::endl;
+    std::cout << "Convergence at epoch: " << epoch << std::endl;
+    std::cout << "Error: X(" << xerr << ") Y(" << yerr <<")\n\n";
     return 0;
 }
